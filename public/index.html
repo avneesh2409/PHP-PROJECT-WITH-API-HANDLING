@@ -1,0 +1,58 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<title>My First Api In R language</title>
+</head>
+<body>
+<h1>we got it thanks for your help</h1>
+<input class="form-control" id="inputvalue" type="number" />
+<button class="btn btn-success" id="btn" >submit</button>
+<div id="mydata"></div>
+<script>
+
+var div  = document.getElementById("mydata")
+if(div.childNodes.length > 0)
+{
+div.remove(div.childNodes[0])
+}
+
+document.getElementById("btn").addEventListener("click",async (e) =>{
+var data = await fetch(`http://localhost:6369/api/data/${parseInt(document.getElementById("inputvalue").value)}`).then(res=>res.json()).catch(err=>console.log(err))
+
+let table = document.createElement("TABLE");
+table.classList.add("table","table-striped");
+let y = JSON.parse(data);
+headers = ["cases","county","date","deaths","fips","state"];
+header = table.createTHead();
+row1 = header.insertRow()
+
+for(x in headers)
+{
+cel = row1.insertCell()
+cel.innerHTML = "<h1>"+headers[x]+"</h1>";
+}
+tbody = table.createTBody();
+y.map((e)=>{
+row = tbody.insertRow();  
+cell1 = row.insertCell();
+cell1.innerHTML = "<strong>"+e.cases+"</strong>"; 
+cell2 = row.insertCell();
+cell2.innerHTML = "<strong>"+e.county+"</strong>"; 
+cell3 = row.insertCell();
+cell3.innerHTML = "<strong>"+e.date+"</strong>"; 
+cell4 = row.insertCell();
+cell4.innerHTML = "<strong>"+e.deaths+"</strong>"; 
+cell5 = row.insertCell();
+cell5.innerHTML = "<strong>"+e.fips+"</strong>"; 
+cell6 = row.insertCell();
+cell6.innerHTML = "<strong>"+e.state+"</strong>"; 
+})
+
+div.appendChild(table)
+
+})
+
+</script>
+
+</body>
+</html>
